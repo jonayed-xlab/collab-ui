@@ -44,7 +44,9 @@ const ActivityItem: React.FC<ActivityItemProps> = ({ activity }) => {
     return "#";
   };
 
-  const formatFieldName = (fieldName: string) => {
+  const formatFieldName = (fieldName?: string | null) => {
+    if (!fieldName) return "";
+
     const formatted = fieldName.replace(/([A-Z])/g, " $1").trim();
     return formatted.charAt(0).toUpperCase() + formatted.slice(1);
   };
@@ -89,19 +91,29 @@ const ActivityItem: React.FC<ActivityItemProps> = ({ activity }) => {
           </p>
 
           <div className="text-xs text-text-muted bg-muted p-2 rounded-md">
-            {isCreation ? (
-              <>
-                <span>Set {formatFieldName(activity.fieldName)} to </span>
-                <span className="text-green-600">{activity.newValue}</span>
-              </>
-            ) : (
-              <>
-                <span>Changed {formatFieldName(activity.fieldName)} from </span>
-                <span className="line-through">{activity.oldValue}</span>
-                <span> to </span>
-                <span className="text-green-600">{activity.newValue}</span>
-              </>
-            )}
+            {activity.fieldName ? (
+              isCreation ? (
+                <>
+                  <span>Set {formatFieldName(activity.fieldName)} to </span>
+                  <span className="text-green-600">
+                    {activity.newValue ?? "—"}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span>
+                    Changed {formatFieldName(activity.fieldName)} from{" "}
+                  </span>
+                  <span className="line-through">
+                    {activity.oldValue ?? "—"}
+                  </span>
+                  <span> to </span>
+                  <span className="text-green-600">
+                    {activity.newValue ?? "—"}
+                  </span>
+                </>
+              )
+            ) : null}
           </div>
         </div>
       </div>

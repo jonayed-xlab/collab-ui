@@ -89,7 +89,7 @@ const Sidebar: React.FC = () => {
         <SidebarItem to="/" icon={<Home size={18} />} label="Overview" />
         <SidebarItem
           to="/assign-user-to-project"
-          icon={<Projector size={18} />}
+          icon={<Briefcase size={18} />}
           label="Projects"
         />
         <SidebarItem
@@ -129,7 +129,7 @@ const Sidebar: React.FC = () => {
               Assigned to me
             </NavLink>
             <NavLink
-              to="/work-packages/all"
+              to="/all"
               className={({ isActive }) => `
                 block px-4 py-2 text-sm rounded-md
                 ${
@@ -144,26 +144,80 @@ const Sidebar: React.FC = () => {
           </div>
         )}
 
-        <SidebarItem
+        {/* <SidebarItem
+          to="/work-packages"
+          icon={<Clock size={18} />}
+          label="Work packages"
+          hasChildren={true}
+          isOpen={openMenus.workPackages}
+          toggleOpen={() => toggleMenu("workPackages")}
+          count={366}
+        />
+
+        {openMenus.workPackages && (
+          <div className="ml-8 space-y-1 mt-1">
+            <NavLink
+              to="/work-packages"
+              className={({ isActive }) => `
+                block px-4 py-2 text-sm rounded-md
+                ${
+                  isActive
+                    ? "bg-primary-light/10 text-primary"
+                    : "text-text-muted hover:bg-background"
+                }
+              `}
+            >
+              Assigned to me
+            </NavLink>
+            <NavLink
+              to="/work-packages/created"
+              className={({ isActive }) => `
+                block px-4 py-2 text-sm rounded-md
+                ${
+                  isActive
+                    ? "bg-primary-light/10 text-primary"
+                    : "text-text-muted hover:bg-background"
+                }
+              `}
+            >
+              Created by me
+            </NavLink>
+            <NavLink
+              to="/work-packages/watched"
+              className={({ isActive }) => `
+                block px-4 py-2 text-sm rounded-md
+                ${
+                  isActive
+                    ? "bg-primary-light/10 text-primary"
+                    : "text-text-muted hover:bg-background"
+                }
+              `}
+            >
+              Watched
+            </NavLink>
+          </div>
+        )} */}
+
+        {/* <SidebarItem
           to="/gantt-charts"
           icon={<Layout size={18} />}
           label="Gantt charts"
-        />
-        <SidebarItem
+        /> */}
+        {/* <SidebarItem
           to="/calendars"
           icon={<Calendar size={18} />}
           label="Calendars"
-        />
+        />*/}
         <SidebarItem to="/boards" icon={<Layout size={18} />} label="Boards" />
         <SidebarItem
           to="/meetings"
           icon={<MessageSquare size={18} />}
           label="Meetings"
-        />
+        /> 
         <SidebarItem to="/wiki" icon={<BookOpen size={18} />} label="Wiki" />
         <SidebarItem to="/news" icon={<FileText size={18} />} label="News" />
 
-        <SidebarItem
+        {/* <SidebarItem
           to="/time-and-costs"
           icon={<Clock size={18} />}
           label="Time and costs"
@@ -201,7 +255,7 @@ const Sidebar: React.FC = () => {
               Cost reports
             </NavLink>
           </div>
-        )}
+        )} */}
 
         <SidebarItem to="/members" icon={<Users size={18} />} label="Members" />
 

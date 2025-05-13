@@ -63,9 +63,53 @@ export enum WorkPackageType {
   BUG = "BUG",
   FEATURE = "FEATURE",
   EPIC = "EPIC",
+  STORY = "STORY",
 }
 
 export interface WorkPackage {
+  id: number;
+  title: string;
+  description: string;
+  workPackageType: WorkPackageType;
+  assignedTo?: number;
+  assignedToName?: string;
+  accountableTo?: number;
+  accountableToName?: string;
+  estimateWork?: string;
+  remainingWork?: string;
+  spentWork?: string;
+  storyPoints?: string;
+  earnedStoryPoints?: string;
+  projectType?: string;
+  startDate?: string;
+  endDate?: string;
+  percentageComplete?: number;
+  category?: string;
+  taskType?: string;
+  version?: string;
+  priority: WorkPackagePriority;
+  repositoryName?: string;
+  branchName?: string;
+  status: WorkPackageStatus;
+  projectId: number;
+  projectName?: string;
+  createdAt?: string;
+  isParentAvailable?: boolean;
+  parentId?: number;
+  parentWorkPackageType?: string;
+  createdByName?: string;
+  updatedAt?: string;
+  updatedByName?: string;
+}
+
+// Work Package Response Types
+export interface WorkPackageResponseWrapper {
+  workPackage: WorkPackage;
+  relatedWorkPackages: WorkPackage[];
+  childWorkPackages: WorkPackage[];
+}
+
+export interface WorkPackageResponse {
   id: number;
   title: string;
   description: string;
@@ -168,12 +212,7 @@ export interface Version {
 export interface WikiPage {
   id: number;
   title: string;
-  content: string;
-  parentId?: number;
-  projectId: number;
-  createdBy: number;
-  updatedBy: number;
-  createdAt: string;
+  description: string;
   updatedAt: string;
-  attachments?: string[];
 }
+

@@ -9,17 +9,21 @@ import {
   WorkPackageType,
   Project,
   User,
+  WorkPackageResponseWrapper,
 } from "../../types";
 import workPackageService from "../../services/workPackageService";
 import projectService from "../../services/projectService";
 import authService from "../../services/authService";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 interface WorkPackageFormProps {
   initialValues?: Partial<WorkPackage>;
   workPackageId?: number;
+  parentId?: number;
+  parentWorkPackageType?: string;
   isEditing?: boolean;
   projectId?: number;
+  isParentAvailable?: boolean;
 }
 
 const WorkPackageForm: React.FC<WorkPackageFormProps> = ({
@@ -30,14 +34,22 @@ const WorkPackageForm: React.FC<WorkPackageFormProps> = ({
     priority: WorkPackagePriority.MEDIUM,
     status: WorkPackageStatus.NEW,
     projectId: 0,
+    parentId: 0,
+    parentWorkPackageType: "",
+    isParentAvailable: false,
   },
-  workPackageId,
+  parentId,
+  parentWorkPackageType,
   isEditing = false,
   projectId,
 }) => {
+  const [parentAvailable, setParentAvailable] = useState<Boolean>(false);
+  const { workPackageId } = useParams<{ workPackageId: string }>();
   const navigate = useNavigate();
   const [projects, setProjects] = useState<Project[]>([]);
   const [users, setUsers] = useState<User[]>([]);
+  const [workPackageData, setWorkPackageData] =
+    useState<WorkPackageResponseWrapper | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,12 +74,41 @@ const WorkPackageForm: React.FC<WorkPackageFormProps> = ({
     fetchData();
   }, []);
 
-  // If projectId is provided, set it in the form values
   useEffect(() => {
     if (projectId && !isEditing) {
-      initialValues.projectId = projectId;
+      setWorkPackageData((prev) =>
+        prev
+          ? {
+              ...prev,
+              workPackage: {
+                ...prev.workPackage,
+                projectId: projectId,
+              },
+            }
+          : null
+      );
+      setParentAvailable(true);
     }
-  }, [projectId, isEditing, initialValues]);
+  }, [projectId, isEditing]);
+
+  useEffect(() => {
+    const fetchWorkPackage = async () => {
+      if (isEditing && workPackageId) {
+        try {
+          const response = await workPackageService.getWorkPackageById(
+            Number(workPackageId)
+          );
+          if (response.statusCode === "S200" && response.data) {
+            setWorkPackageData(response.data);
+          }
+        } catch (error) {
+          console.error("Error fetching work package:", error);
+        }
+      }
+    };
+
+    fetchWorkPackage();
+  }, [isEditing, workPackageId]);
 
   const handleSubmit = async (
     values: Partial<WorkPackage>,
@@ -78,7 +119,7 @@ const WorkPackageForm: React.FC<WorkPackageFormProps> = ({
 
       if (isEditing && workPackageId) {
         response = await workPackageService.updateWorkPackage(
-          workPackageId,
+          Number(workPackageId),
           values
         );
       } else {
@@ -120,7 +161,18 @@ const WorkPackageForm: React.FC<WorkPackageFormProps> = ({
       </h2>
 
       <Formik
-        initialValues={initialValues}
+        initialValues={
+          isEditing && workPackageData
+            ? workPackageData.workPackage
+            : {
+                ...initialValues,
+                projectId: projectId || initialValues.projectId,
+                parentId: parentId || initialValues.parentId,
+                parentWorkPackageType:
+                  parentWorkPackageType || initialValues.parentWorkPackageType,
+                isParentAvailable: parentAvailable,
+              }
+        }
         validationSchema={workPackageSchema}
         onSubmit={handleSubmit}
         enableReinitialize

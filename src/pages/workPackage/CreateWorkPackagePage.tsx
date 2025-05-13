@@ -1,14 +1,21 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import WorkPackageForm from '../../components/work-package/WorkPackageForm';
+import React from "react";
+import { useParams } from "react-router-dom";
+import WorkPackageForm from "../../components/work-package/WorkPackageForm";
 
 const CreateWorkPackagePage: React.FC = () => {
   const { projectId } = useParams<{ projectId: string }>();
-  
+  const { parentId } = useParams<{ parentId: string }>();
+  const { parentWorkPackageType } = useParams<{ parentWorkPackageType: string }>();
+
   return (
     <div className="container mx-auto">
       <h1 className="text-2xl font-bold mb-6">Create New Work Package</h1>
-      <WorkPackageForm projectId={projectId ? parseInt(projectId) : undefined} />
+      <WorkPackageForm
+        projectId={projectId ? parseInt(projectId) : undefined}
+        parentId={parentId ? parseInt(parentId) : undefined}
+        parentWorkPackageType={parentWorkPackageType}
+        isEditing={false}
+      />
     </div>
   );
 };

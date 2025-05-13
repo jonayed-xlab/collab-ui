@@ -4,14 +4,14 @@ import { Book, Edit, Trash2, Clock, Plus } from "lucide-react";
 import { WikiPage as WikiPageType } from "../../types";
 import Card from "../../components/ui/Card";
 import WikiEditor from "../../components/wiki/WikiEditor";
-import wikiService from "../../services/wikiService"; // Adjust the path as needed
+import wikiService from "../../services/wikiService";
 
 const WikiPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [wikiPage, setWikiPage] = useState<WikiPageType | null>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -22,10 +22,10 @@ const WikiPage: React.FC = () => {
         setIsLoading(true);
         const response = await wikiService.getWikiPageById(parseInt(id));
 
-        if (response. && response.data) {
+        if (response.statusCode === "S200" && response.data) {
           setWikiPage(response.data);
         } else {
-          setError(response.error || "Failed to fetch wiki page");
+          setError(response.message || "Failed to fetch wiki page");
         }
       } catch (error) {
         setError("An error occurred while fetching the wiki page");
@@ -44,10 +44,10 @@ const WikiPage: React.FC = () => {
     try {
       const response = await wikiService.deleteWikiPage(wikiPage.id);
 
-      if (response.success) {
-        navigate("/wiki");
+      if (response.statusCode === "S200") {
+        navigate("/wikis");
       } else {
-        setError(response.error || "Failed to delete wiki page");
+        setError(response.message || "Failed to delete wiki page");
       }
     } catch (error) {
       setError("An error occurred while deleting the wiki page");
@@ -63,11 +63,11 @@ const WikiPage: React.FC = () => {
         updatedData
       );
 
-      if (response.success && response.data) {
+      if (response.statusCode === "S200" && response.data) {
         setWikiPage(response.data);
         setIsEditing(false);
       } else {
-        setError(response.error || "Failed to update wiki page");
+        setError(response.message || "Failed to update wiki page");
       }
     } catch (error) {
       setError("An error occurred while updating the wiki page");
@@ -146,13 +146,13 @@ const WikiPage: React.FC = () => {
         <Card>
           <div
             className="prose max-w-none"
-            dangerouslySetInnerHTML={{ __html: wikiPage.content }}
+            dangerouslySetInnerHTML={{ __html: wikiPage.description }}
           />
         </Card>
       )}
 
       {/* History section */}
-      <div className="mt-8">
+      {/* <div className="mt-8">
         <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
           <Clock size={20} />
           <span>Page History</span>
@@ -163,7 +163,7 @@ const WikiPage: React.FC = () => {
             History feature coming soon...
           </div>
         </Card>
-      </div>
+      </div> */}
     </div>
   );
 };

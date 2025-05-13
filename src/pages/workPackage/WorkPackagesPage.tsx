@@ -5,6 +5,7 @@ import {
   WorkPackage,
   WorkPackageStatus,
   WorkPackagePriority,
+  WorkPackageResponse,
 } from "../../types";
 import workPackageService from "../../services/workPackageService";
 import WorkPackageCard from "../../components/work-package/WorkPackageCard";
@@ -12,9 +13,9 @@ import Card from "../../components/ui/Card";
 import { useAuth } from "../../contexts/AuthContext";
 
 const WorkPackagesPage: React.FC = () => {
-  const [workPackages, setWorkPackages] = useState<WorkPackage[]>([]);
+  const [workPackages, setWorkPackages] = useState<WorkPackageResponse[]>([]);
   const [filteredWorkPackages, setFilteredWorkPackages] = useState<
-    WorkPackage[]
+    WorkPackageResponse[]
   >([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("");
@@ -208,3 +209,4 @@ const WorkPackagesPage: React.FC = () => {
 };
 
 export default WorkPackagesPage;
+

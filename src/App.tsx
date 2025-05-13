@@ -31,6 +31,13 @@ import AssignUserToProjectPage from "./pages/project/AssignUserToProjectPage";
 import ProjectDetailsPage from "./pages/project/ProjectDetailsPage";
 import RoadmapPage from "./pages/roadmap/RoadmapPage";
 import WikiPage from "./pages/wiki/WikiPage";
+import WikiListPage from "./pages/wiki/WikiListPage";
+import WikiCreate from "./pages/wiki/WikiCreate";
+import NewsPage from "./pages/news/NewsPage";
+import WorkPackageDetailPage from "./pages/workPackage/WorkPackageDetailPage";
+import WorkPackageForm from "./components/work-package/WorkPackageForm";
+import ProjectDashboard from "./pages/dashboard/ProjectDashboard";
+import ProjectsPage2 from "./pages/project/ProjectsPage2";
 
 // Protected route component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
@@ -144,7 +151,7 @@ const AppRoutes: React.FC = () => {
               }
             />
             <Route
-              path="/work-packages/all"
+              path="/all"
               element={
                 <ProtectedRoute>
                   <WorkPackagesPageAll />
@@ -160,6 +167,14 @@ const AppRoutes: React.FC = () => {
               }
             />
             <Route
+              path="/projects2"
+              element={
+                <ProtectedRoute>
+                  <ProjectsPage2 />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/work-packages/create"
               element={
                 <ProtectedRoute>
@@ -168,7 +183,26 @@ const AppRoutes: React.FC = () => {
               }
             />
             <Route
-              path="/projects/:projectId/work-packages/create"
+              path="/work-packages/:id"
+              element={
+                <ProtectedRoute>
+                  <WorkPackageDetailPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/work-packages/:workPackageId/edit"
+              element={<WorkPackageForm isEditing={true} />}
+            />
+
+            <Route
+              path="/projects/dashboard/:projectId"
+              element={<ProjectDashboard />}
+            />
+
+            <Route
+              path="/projects/:projectId/:parentId/:parentWorkPackageType/work-packages/create"
               element={
                 <ProtectedRoute>
                   <CreateWorkPackagePage />
@@ -215,11 +249,34 @@ const AppRoutes: React.FC = () => {
               path="/wiki"
               element={
                 <ProtectedRoute>
+                  <WikiListPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/wiki/create"
+              element={
+                <ProtectedRoute>
+                  <WikiCreate />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/wiki/:id"
+              element={
+                <ProtectedRoute>
                   <WikiPage />
                 </ProtectedRoute>
               }
             />
-
+            <Route
+              path="/news"
+              element={
+                <ProtectedRoute>
+                  <NewsPage />
+                </ProtectedRoute>
+              }
+            />
             {/* Fallback route */}
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>

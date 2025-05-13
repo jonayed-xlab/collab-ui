@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Briefcase, FileText, Plus } from "lucide-react";
-import { Project, WorkPackage } from "../../types";
+import { Project, WorkPackage, WorkPackageResponse } from "../../types";
 import projectService from "../../services/projectService";
 import workPackageService from "../../services/workPackageService";
 import Card from "../../components/ui/Card";
 import ProjectCard from "../../components/project/ProjectCard";
 import WorkPackageCard from "../../components/work-package/WorkPackageCard";
 import { useAuth } from "../../contexts/AuthContext";
+import ProjectCard2 from "../../components/project/ProjectCard2";
 
 const HomePage: React.FC = () => {
   const { state } = useAuth();
   const [projects, setProjects] = useState<Project[]>([]);
-  const [workPackages, setWorkPackages] = useState<WorkPackage[]>([]);
+  const [workPackages, setWorkPackages] = useState<WorkPackageResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -83,10 +84,10 @@ const HomePage: React.FC = () => {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {projects.map((project) => (
-                  <ProjectCard key={project.id} project={project} />
+                  <ProjectCard2 key={project.id} project={project} />
                 ))}
                 <Link
-                  to="/projects"
+                  to="/projects2"
                   className="flex items-center justify-center p-4 border border-dashed border-border rounded-lg hover:bg-background text-text-muted"
                 >
                   View all projects

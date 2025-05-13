@@ -8,10 +8,11 @@ import {
   LogOut,
   Settings,
   User,
+  Users,
   Home,
 } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
-import collabImage from "../../assets/teamcollab.png";
+// import collabImage from "../../assets/teamcollab.png";
 
 const Header: React.FC = () => {
   const { state, logout } = useAuth();
@@ -36,12 +37,11 @@ const Header: React.FC = () => {
             {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
 
-          <Link to="/" className="flex items-center gap-2">
-            <img
-              src={collabImage}
-              alt="TeamCollab"
-              className="h-16 w-16" // <-- Increase size here
-            />
+          <Link to="/" className="flex items-center gap-3 px-4 py-3 mb-4">
+            <Users size={20} className="text-white" />
+            <h1 className="text-xl font-bold text-white tracking-wide">
+              TeamCollab
+            </h1>
           </Link>
         </div>
 

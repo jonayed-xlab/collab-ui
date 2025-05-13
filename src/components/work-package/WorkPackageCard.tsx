@@ -1,11 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Calendar, User } from "lucide-react";
+import { WorkPackage } from "../../types";
 import {
-  WorkPackage,
-  WorkPackagePriority,
-  WorkPackageStatus,
-} from "../../types";
+  FileText,
+  GitBranch,
+  GitPullRequest,
+  Layers,
+  ListTree,
+} from "lucide-react";
 
 interface WorkPackageCardProps {
   workPackage: WorkPackage;
@@ -16,128 +18,65 @@ const WorkPackageCard: React.FC<WorkPackageCardProps> = ({
   workPackage,
   showProject = false,
 }) => {
-  const getStatusColor = (status: WorkPackageStatus) => {
+  const getStatusClass = (status: string) => {
     switch (status) {
-      case WorkPackageStatus.NEW:
-        return "bg-primary/10 text-primary";
-      case WorkPackageStatus.IN_PROGRESS:
-        return "bg-warning/10 text-warning";
-      case WorkPackageStatus.COMPLETED:
-        return "bg-success/10 text-success";
-      case WorkPackageStatus.ON_HOLD:
-        return "bg-text-muted/10 text-text-muted";
-      case WorkPackageStatus.CLOSED:
-        return "bg-success/10 text-success";
+      case "NEW":
+        return "bg-blue-100 text-blue-800";
+      case "IN_PROGRESS":
+        return "bg-yellow-100 text-yellow-800";
+      case "COMPLETED":
+        return "bg-green-100 text-green-800";
+      case "ON_HOLD":
+        return "bg-gray-100 text-gray-800";
+      case "CLOSED":
+        return "bg-purple-100 text-purple-800";
       default:
-        return "bg-primary/10 text-primary";
+        return "bg-blue-100 text-blue-800";
     }
   };
 
-  const getPriorityColor = (priority: WorkPackagePriority) => {
-    switch (priority) {
-      case WorkPackagePriority.LOW:
-        return "bg-text-muted/10 text-text-muted";
-      case WorkPackagePriority.MEDIUM:
-        return "bg-primary/10 text-primary";
-      case WorkPackagePriority.HIGH:
-        return "bg-warning/10 text-warning";
-      case WorkPackagePriority.URGENT:
-        return "bg-error/10 text-error";
+  const getTypeIcon = (type: string) => {
+    switch (type) {
+      case "EPIC":
+        return <Layers size={14} className="mr-1" />;
+      case "STORY":
+        return <ListTree size={14} className="mr-1" />;
+      case "FEATURE":
+        return <GitPullRequest size={14} className="mr-1" />;
+      case "BUG":
+        return <GitBranch size={14} className="mr-1" />;
       default:
-        return "bg-primary/10 text-primary";
+        return <FileText size={14} className="mr-1" />;
     }
-  };
-
-  const formatDate = (dateString?: string) => {
-    if (!dateString) return "Not set";
-    const date = new Date(dateString);
-    return date.toLocaleDateString();
   };
 
   return (
-    <div className="bg-white border border-border rounded-lg overflow-hidden hover:shadow-md transition-shadow">
-      <div className="p-4">
+    <Link to={`/work-packages/${workPackage.id}`}>
+      <div className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow h-full">
         <div className="flex justify-between items-start mb-2">
-          <Link
-            to={`/work-packages/${workPackage.id}`}
-            className="text-lg font-medium text-text hover:text-primary"
+          <span
+            className={`text-xs px-2 py-1 rounded-full ${getStatusClass(
+              workPackage.status
+            )}`}
           >
-            {workPackage.title}
-          </Link>
-          <div className="flex gap-2">
-            <span
-              className={`text-xs px-2 py-0.5 rounded-full font-medium ${getStatusColor(
-                workPackage.status
-              )}`}
-            >
-              {workPackage.status.replace("_", " ")}
-            </span>
-            <span
-              className={`text-xs px-2 py-0.5 rounded-full font-medium ${getPriorityColor(
-                workPackage.priority
-              )}`}
-            >
-              {workPackage.priority}
-            </span>
-          </div>
+            {workPackage.status.replace("_", " ")}
+          </span>
+          <span className="text-xs text-gray-500">#{workPackage.id}</span>
         </div>
-
-        {showProject && (
-          <div className="mb-2">
-            <Link
-              to={`/projects/${workPackage.projectId}`}
-              className="text-sm text-primary hover:underline"
-            >
-              Project: {workPackage.projectName}
-            </Link>
+        <h3 className="text-md font-medium text-gray-900 mb-2 flex items-center">
+          {getTypeIcon(workPackage.workPackageType)}
+          {workPackage.title}
+        </h3>
+        <p className="text-sm text-gray-500 mb-3 line-clamp-2">
+          {workPackage.description || "No description"}
+        </p>
+        {showProject && workPackage.projectName && (
+          <div className="text-xs text-gray-500">
+            Project: {workPackage.projectName}
           </div>
         )}
-
-        <p className="text-sm text-text-muted line-clamp-2 mb-4">
-          {workPackage.description}
-        </p>
-
-        <div className="flex items-center justify-between text-xs text-text-muted">
-          {workPackage.assignedToName && (
-            <div className="flex items-center gap-1">
-              <User size={14} />
-              <span>Assigned to: {workPackage.assignedToName}</span>
-            </div>
-          )}
-
-          {workPackage.accountableToName && (
-            <div className="flex items-center gap-1">
-              <User size={14} />
-              <span>Assigned to: {workPackage.accountableToName}</span>
-            </div>
-          )}
-
-          {workPackage.startDate && (
-            <div className="flex items-center gap-1">
-              <Calendar size={14} />
-              <span>{formatDate(workPackage.startDate)}</span>
-            </div>
-          )}
-        </div>
       </div>
-
-      {workPackage.percentageComplete !== undefined && (
-        <div className="px-4 py-2 border-t border-border bg-background">
-          <div className="flex justify-between items-center mb-1">
-            <span className="text-xs font-medium">Progress</span>
-            <span className="text-xs font-medium">
-              {workPackage.percentageComplete}%
-            </span>
-          </div>
-          <div className="w-full bg-border rounded-full h-1.5">
-            <div
-              className="bg-primary h-1.5 rounded-full"
-              style={{ width: `${workPackage.percentageComplete}%` }}
-            ></div>
-          </div>
-        </div>
-      )}
-    </div>
+    </Link>
   );
 };
 
