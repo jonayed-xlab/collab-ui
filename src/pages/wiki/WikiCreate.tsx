@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Book, Save, X } from "lucide-react";
+import { Book, X } from "lucide-react";
 import { WikiPage } from "../../types";
 import Card from "../../components/ui/Card";
 import WikiEditor from "../../components/wiki/WikiEditor";

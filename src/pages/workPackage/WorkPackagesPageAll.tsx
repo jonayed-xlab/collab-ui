@@ -1,24 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { FileText, Plus, Search, List, Grid } from "lucide-react";
 import {
-  FileText,
-  Plus,
-  Search,
-  Filter,
-  ChevronDown,
-  List,
-  Grid,
-} from "lucide-react";
-import {
-  WorkPackage,
   WorkPackageStatus,
-  WorkPackagePriority,
   WorkPackageResponse,
   WorkPackageType,
 } from "../../types";
 import workPackageService from "../../services/workPackageService";
 import Card from "../../components/ui/Card";
-import { useAuth } from "../../contexts/AuthContext";
 
 const WorkPackagesPageAll: React.FC = () => {
   const navigate = useNavigate();

@@ -5,7 +5,9 @@ import WorkPackageForm from "../../components/work-package/WorkPackageForm";
 const CreateWorkPackagePage: React.FC = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const { parentId } = useParams<{ parentId: string }>();
-  const { parentWorkPackageType } = useParams<{ parentWorkPackageType: string }>();
+  const { parentWorkPackageType } = useParams<{
+    parentWorkPackageType: string;
+  }>();
 
   return (
     <div className="container mx-auto">

@@ -13,11 +13,6 @@ interface ProfileFormValues {
 const ProfileForm: React.FC = () => {
   const { state, updateUser } = useAuth();
 
-  // Split the name into first and last name for the form
-  // const nameParts = state.user?.name.split(' ') || ['', ''];
-  // const firstName = nameParts[0] || '';
-  // const lastName = nameParts.slice(1).join(' ') || '';
-
   const initialValues: ProfileFormValues = {
     name: state.user?.name || "",
     email: state.user?.email || "",
@@ -60,12 +55,6 @@ const ProfileForm: React.FC = () => {
   return (
     <Card className="max-w-xl mx-auto">
       <h2 className="text-xl font-semibold mb-4">Profile</h2>
-
-      {/* <div className="mb-4">
-        <div className="text-sm text-text-muted mb-1">Email: </div>
-        <div className="text-text font-medium">{state.user?.email}</div>
-      </div> */}
-
       <Formik
         initialValues={initialValues}
         validationSchema={profileSchema}

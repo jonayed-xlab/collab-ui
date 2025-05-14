@@ -1,14 +1,13 @@
+import { Briefcase, FileText, Plus } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Briefcase, FileText, Plus } from "lucide-react";
-import { Project, WorkPackage, WorkPackageResponse } from "../../types";
-import projectService from "../../services/projectService";
-import workPackageService from "../../services/workPackageService";
+import ProjectCard2 from "../../components/project/ProjectCard2";
 import Card from "../../components/ui/Card";
-import ProjectCard from "../../components/project/ProjectCard";
 import WorkPackageCard from "../../components/work-package/WorkPackageCard";
 import { useAuth } from "../../contexts/AuthContext";
-import ProjectCard2 from "../../components/project/ProjectCard2";
+import projectService from "../../services/projectService";
+import workPackageService from "../../services/workPackageService";
+import { Project, WorkPackageResponse } from "../../types";
 
 const HomePage: React.FC = () => {
   const { state } = useAuth();
@@ -54,7 +53,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="container mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Welcome to TemaCollab!</h1>
+      <h1 className="text-2xl font-bold mb-6">Welcome to CollabSuite!</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Projects section */}
@@ -100,50 +99,40 @@ const HomePage: React.FC = () => {
         {/* News & Updates section */}
         <div className="lg:col-span-1">
           <Card>
-            <h2 className="text-xl font-semibold mb-4">New Features</h2>
-            <ul className="space-y-3">
+            <h2 className="text-xl font-semibold mb-4">What’s New</h2>
+            <ul className="space-y-3 text-sm">
               <li className="flex gap-2">
                 <div className="flex-shrink-0 text-success">✓</div>
-                <div>
-                  <p className="text-sm">Enable automatic scheduling mode</p>
-                </div>
+                <span>
+                  Create and manage work packages with ease to organize tasks
+                  and milestones efficiently.
+                </span>
               </li>
               <li className="flex gap-2">
                 <div className="flex-shrink-0 text-success">✓</div>
-                <div>
-                  <p className="text-sm">
-                    Set agenda item outcomes for meetings
-                  </p>
-                </div>
+                <span>
+                  Assign team members to projects for better collaboration and
+                  accountability.
+                </span>
               </li>
               <li className="flex gap-2">
                 <div className="flex-shrink-0 text-success">✓</div>
-                <div>
-                  <p className="text-sm">
-                    Generate PDF documents from work package descriptions
-                  </p>
-                </div>
+                <span>
+                  Visualize project progress and insights through dynamic
+                  dashboards and reports.
+                </span>
               </li>
               <li className="flex gap-2">
                 <div className="flex-shrink-0 text-success">✓</div>
-                <div>
-                  <p className="text-sm">
-                    Better manage projects with enhanced project lists view
-                  </p>
-                </div>
-              </li>
-              <li className="flex gap-2">
-                <div className="flex-shrink-0 text-success">✓</div>
-                <div>
-                  <p className="text-sm">
-                    Use @-mention of users when replying to comments
-                  </p>
-                </div>
+                <span>
+                  Track every important change or action with detailed activity
+                  logs.
+                </span>
               </li>
             </ul>
             <div className="mt-4 pt-4 border-t border-border">
               <Link to="/news" className="text-primary text-sm hover:underline">
-                Learn more about the new features
+                Explore the full release details
               </Link>
             </div>
           </Card>

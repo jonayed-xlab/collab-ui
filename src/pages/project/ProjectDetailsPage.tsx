@@ -5,7 +5,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import projectService from "../../services/projectService";
 import userService from "../../services/userService";
-import { User, Project, ProjectAssignmentUser } from "../../types";
+import { User, Project } from "../../types";
 import Card from "../../components/ui/Card";
 import ProjectForm from "../../components/project/ProjectForm";
 

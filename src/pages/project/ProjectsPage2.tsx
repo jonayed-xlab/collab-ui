@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { Briefcase, Plus, Search } from "lucide-react";
+import { Briefcase, Search } from "lucide-react";
 import { Project } from "../../types";
 import projectService from "../../services/projectService";
-import ProjectCard from "../../components/project/ProjectCard";
 import Card from "../../components/ui/Card";
 import ProjectCard2 from "../../components/project/ProjectCard2";
 
@@ -72,17 +70,6 @@ const ProjectsPage2: React.FC = () => {
 
   return (
     <div className="container mx-auto">
-      {/* <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold flex items-center gap-2">
-          <Briefcase size={24} />
-          <span>Projects</span>
-        </h1>
-        <Link to="/projects/create" className="btn-primary">
-          <Plus size={16} className="mr-1" />
-          New Project
-        </Link>
-      </div> */}
-
       <Card className="mb-6">
         <div className="relative">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -106,9 +93,6 @@ const ProjectsPage2: React.FC = () => {
               <p className="text-text-muted mb-4">
                 No projects have been created yet.
               </p>
-              {/* <Link to="/projects/create" className="btn-primary">
-                Create your first project
-              </Link> */}
             </>
           ) : (
             <p className="text-text-muted">

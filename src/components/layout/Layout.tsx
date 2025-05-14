@@ -1,7 +1,7 @@
-import React from 'react';
-import Header from './Header';
-import Sidebar from './Sidebar';
-import { useLocation } from 'react-router-dom';
+import React from "react";
+import Header from "./Header";
+import Sidebar from "./Sidebar";
+import { useLocation } from "react-router-dom";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -9,7 +9,8 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
-  const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
+  const isAuthPage =
+    location.pathname === "/login" || location.pathname === "/register";
 
   if (isAuthPage) {
     return <>{children}</>;

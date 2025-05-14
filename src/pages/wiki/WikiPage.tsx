@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Book, Edit, Trash2, Clock, Plus } from "lucide-react";
+import { Book, Edit, Trash2 } from "lucide-react";
 import { WikiPage as WikiPageType } from "../../types";
 import Card from "../../components/ui/Card";
 import WikiEditor from "../../components/wiki/WikiEditor";
@@ -150,20 +150,6 @@ const WikiPage: React.FC = () => {
           />
         </Card>
       )}
-
-      {/* History section */}
-      {/* <div className="mt-8">
-        <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-          <Clock size={20} />
-          <span>Page History</span>
-        </h2>
-
-        <Card>
-          <div className="text-sm text-text-muted">
-            History feature coming soon...
-          </div>
-        </Card>
-      </div> */}
     </div>
   );
 };

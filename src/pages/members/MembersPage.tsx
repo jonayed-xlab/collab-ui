@@ -10,7 +10,6 @@ interface MemberFormData {
 
 const MembersPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedRole, setSelectedRole] = useState("MEMBER");
   const [showAddMember, setShowAddMember] = useState(false);
   const [members, setMembers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);

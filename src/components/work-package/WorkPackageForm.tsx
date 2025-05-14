@@ -35,8 +35,9 @@ const WorkPackageForm: React.FC<WorkPackageFormProps> = ({
     status: WorkPackageStatus.NEW,
     projectId: 0,
     parentId: 0,
-    parentWorkPackageType: "",
+    parentWorkPackageType: null,
     isParentAvailable: false,
+    branchName: "",
   },
   parentId,
   parentWorkPackageType,
@@ -444,6 +445,23 @@ const WorkPackageForm: React.FC<WorkPackageFormProps> = ({
                 />
                 <ErrorMessage
                   name="spentWork"
+                  component="div"
+                  className="form-error"
+                />
+              </div>
+              <div>
+                <label htmlFor="branchName" className="label">
+                  Branch Name
+                </label>
+                <Field
+                  type="text"
+                  name="branchName"
+                  id="branchName"
+                  className="input"
+                  placeholder="e.g., feature/authentication"
+                />
+                <ErrorMessage
+                  name="branchName"
                   component="div"
                   className="form-error"
                 />

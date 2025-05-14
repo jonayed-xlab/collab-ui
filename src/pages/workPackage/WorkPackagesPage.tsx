@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FileText, Plus, Search, Filter } from "lucide-react";
 import {
-  WorkPackage,
   WorkPackageStatus,
   WorkPackagePriority,
   WorkPackageResponse,
@@ -209,4 +208,3 @@ const WorkPackagesPage: React.FC = () => {
 };
 
 export default WorkPackagesPage;
-

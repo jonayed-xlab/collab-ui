@@ -111,14 +111,17 @@ const AssignUserToProjectPage: React.FC = () => {
   };
 
   // Handle delete assignment
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (assignment: ProjectAssignment) => {
     try {
       setLoading((prev) => ({ ...prev, assignments: true }));
-      const response = await projectService.deleteAssignment(id);
+      const response = await projectService.deleteAssignment(
+        assignment.userId,
+        assignment.projectId
+      );
 
       if (response.statusCode === "S200") {
         setSuccess("Assignment removed successfully");
-        setAssignments((prev) => prev.filter((a) => a.id !== id));
+        setAssignments((prev) => prev.filter((a) => a.id !== assignment.id));
       } else {
         setError(response.message || "Failed to remove assignment");
       }
@@ -361,7 +364,7 @@ const AssignUserToProjectPage: React.FC = () => {
                           Edit
                         </button>
                         <button
-                          onClick={() => handleDelete(assignment.id)}
+                          onClick={() => handleDelete(assignment)}
                           className="text-red-600 hover:text-red-900"
                         >
                           Remove

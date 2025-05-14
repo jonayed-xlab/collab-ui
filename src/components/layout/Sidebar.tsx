@@ -4,7 +4,6 @@ import {
   Home,
   Activity,
   GitPullRequest,
-  Calendar,
   Layout,
   MessageSquare,
   FileText,
@@ -15,7 +14,6 @@ import {
   ChevronRight,
   BookOpen,
   Briefcase,
-  Projector,
 } from "lucide-react";
 
 interface SidebarItemProps {
@@ -110,7 +108,6 @@ const Sidebar: React.FC = () => {
           hasChildren={true}
           isOpen={openMenus.workPackages}
           toggleOpen={() => toggleMenu("workPackages")}
-          // count={366}
         />
 
         {openMenus.workPackages && (
@@ -143,122 +140,9 @@ const Sidebar: React.FC = () => {
             </NavLink>
           </div>
         )}
-
-        {/* <SidebarItem
-          to="/work-packages"
-          icon={<Clock size={18} />}
-          label="Work packages"
-          hasChildren={true}
-          isOpen={openMenus.workPackages}
-          toggleOpen={() => toggleMenu("workPackages")}
-          count={366}
-        />
-
-        {openMenus.workPackages && (
-          <div className="ml-8 space-y-1 mt-1">
-            <NavLink
-              to="/work-packages"
-              className={({ isActive }) => `
-                block px-4 py-2 text-sm rounded-md
-                ${
-                  isActive
-                    ? "bg-primary-light/10 text-primary"
-                    : "text-text-muted hover:bg-background"
-                }
-              `}
-            >
-              Assigned to me
-            </NavLink>
-            <NavLink
-              to="/work-packages/created"
-              className={({ isActive }) => `
-                block px-4 py-2 text-sm rounded-md
-                ${
-                  isActive
-                    ? "bg-primary-light/10 text-primary"
-                    : "text-text-muted hover:bg-background"
-                }
-              `}
-            >
-              Created by me
-            </NavLink>
-            <NavLink
-              to="/work-packages/watched"
-              className={({ isActive }) => `
-                block px-4 py-2 text-sm rounded-md
-                ${
-                  isActive
-                    ? "bg-primary-light/10 text-primary"
-                    : "text-text-muted hover:bg-background"
-                }
-              `}
-            >
-              Watched
-            </NavLink>
-          </div>
-        )} */}
-
-        {/* <SidebarItem
-          to="/gantt-charts"
-          icon={<Layout size={18} />}
-          label="Gantt charts"
-        /> */}
-        {/* <SidebarItem
-          to="/calendars"
-          icon={<Calendar size={18} />}
-          label="Calendars"
-        />*/}
-        <SidebarItem to="/boards" icon={<Layout size={18} />} label="Boards" />
-        <SidebarItem
-          to="/meetings"
-          icon={<MessageSquare size={18} />}
-          label="Meetings"
-        /> 
         <SidebarItem to="/wiki" icon={<BookOpen size={18} />} label="Wiki" />
         <SidebarItem to="/news" icon={<FileText size={18} />} label="News" />
-
-        {/* <SidebarItem
-          to="/time-and-costs"
-          icon={<Clock size={18} />}
-          label="Time and costs"
-          hasChildren={true}
-          isOpen={openMenus.timeAndCosts}
-          toggleOpen={() => toggleMenu("timeAndCosts")}
-        />
-
-        {openMenus.timeAndCosts && (
-          <div className="ml-8 space-y-1 mt-1">
-            <NavLink
-              to="/time-and-costs/spent-time"
-              className={({ isActive }) => `
-                block px-4 py-2 text-sm rounded-md
-                ${
-                  isActive
-                    ? "bg-primary-light/10 text-primary"
-                    : "text-text-muted hover:bg-background"
-                }
-              `}
-            >
-              Spent time
-            </NavLink>
-            <NavLink
-              to="/time-and-costs/cost-reports"
-              className={({ isActive }) => `
-                block px-4 py-2 text-sm rounded-md
-                ${
-                  isActive
-                    ? "bg-primary-light/10 text-primary"
-                    : "text-text-muted hover:bg-background"
-                }
-              `}
-            >
-              Cost reports
-            </NavLink>
-          </div>
-        )} */}
-
         <SidebarItem to="/members" icon={<Users size={18} />} label="Members" />
-
         <SidebarItem
           to="/settings"
           icon={<Settings size={18} />}

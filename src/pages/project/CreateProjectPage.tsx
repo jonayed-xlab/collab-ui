@@ -1,5 +1,5 @@
-import React from 'react';
-import ProjectForm from '../../components/project/ProjectForm';
+import React from "react";
+import ProjectForm from "../../components/project/ProjectForm";
 
 const CreateProjectPage: React.FC = () => {
   return (

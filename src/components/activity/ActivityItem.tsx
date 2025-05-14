@@ -1,13 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {
-  CheckCircle,
-  // Circle,
-  CircleDot,
-  Bug,
-  FileText,
-  Clock,
-} from "lucide-react";
+import { CheckCircle, CircleDot, Bug, FileText, Clock } from "lucide-react";
 import { FieldChangeLog } from "../../types";
 
 interface ActivityItemProps {

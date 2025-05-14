@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   Bell,
   Menu,
-  // Search,
   X,
   LogOut,
   Settings,
@@ -12,13 +11,14 @@ import {
   Home,
 } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
-// import collabImage from "../../assets/teamcollab.png";
+import { useNotifications } from "../../contexts/NotificationContext";
 
 const Header: React.FC = () => {
   const { state, logout } = useAuth();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const { unreadCount } = useNotifications();
 
   const handleLogout = async () => {
     await logout();
@@ -40,33 +40,25 @@ const Header: React.FC = () => {
           <Link to="/" className="flex items-center gap-3 px-4 py-3 mb-4">
             <Users size={20} className="text-white" />
             <h1 className="text-xl font-bold text-white tracking-wide">
-              TeamCollab
+              CollabSuite
             </h1>
           </Link>
         </div>
-
-        {/* Search */}
-        {/* <div className="hidden md:block flex-1 mx-8">
-          <div className="relative max-w-xl">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <Search size={18} className="text-white/70" />
-            </div>
-            <input
-              type="search"
-              className="w-full py-2 pl-10 pr-4 text-sm text-white placeholder-white/70 bg-primary-dark rounded-md focus:outline-none focus:ring-2 focus:ring-white/20"
-              placeholder="Search in BS23 FinTech Projects..."
-            />
-          </div>
-        </div> */}
-
         {/* User menu */}
         <div className="flex items-center gap-2">
           {state.isAuthenticated && (
             <>
-              <button className="p-2 text-white rounded-md hover:bg-primary-dark relative">
+              <Link
+                to="/notifications"
+                className="p-2 text-white rounded-md hover:bg-primary-dark relative"
+              >
                 <Bell size={20} />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
-              </button>
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-error rounded-full text-xs flex items-center justify-center text-white">
+                    {unreadCount}
+                  </span>
+                )}
+              </Link>
 
               <div className="relative">
                 <button

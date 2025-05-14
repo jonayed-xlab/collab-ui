@@ -1,207 +1,243 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
+  PieChart,
+  Pie,
+  Cell,
   BarChart,
   Bar,
   XAxis,
   YAxis,
   Tooltip,
   Legend,
-  PieChart,
-  Pie,
-  Cell,
+  CartesianGrid,
   ResponsiveContainer,
-  RadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  Radar,
 } from "recharts";
 import workPackageService from "../../services/workPackageService";
 
-// Example color palette
+// Color palette that matches the OpenProject style
 const COLORS = [
-  "#0088FE",
-  "#00C49F",
-  "#FFBB28",
-  "#FF8042",
-  "#845EC2",
-  "#D65DB1",
+  "#FF8E8E", // Pink for open items (similar to the OpenProject pink)
+  "#87CEFA", // Light blue for closed items
+  "#FFB347", // Orange
+  "#B19CD9", // Purple
+  "#77DD77", // Green
+  "#FF6961", // Red
 ];
 
+// Interfaces for our data types
 interface StatusCount {
   status: string;
   count: number;
 }
 
 interface UserWorkCount {
-  userName: string;
+  username: string;
   count: number;
 }
 
-interface WorkPackageTypeStats {
-  type: string;
-  count: number;
+interface WorkPackageTypeStat {
+  workPackageType: string;
+  openCount: number;
+  closeCount: number;
 }
 
-interface CategoryCount {
-  category: string;
-  count: number;
-}
-
-interface PriorityStats {
+interface PriorityStat {
   priority: string;
-  count: number;
+  openCount: number;
+  closeCount: number;
 }
 
 interface WorkPackageDashboardData {
   statusCounts: StatusCount[];
   userWorkCounts: UserWorkCount[];
-  workPackageTypeStats: WorkPackageTypeStats[];
-  categoryCounts: CategoryCount[];
-  priorityStats: PriorityStats[];
+  workPackageTypeStats: WorkPackageTypeStat[];
+  priorityStats: PriorityStat[];
 }
 
-const ProjectDashboard: React.FC = () => {
+// Mock service to simulate API call
+// const fetchDashboardData = async (projectId) => {
+//   // This would normally be a real API call
+//   return {
+//     statusCode: "S200",
+//     message: "success",
+//     data: {
+//       statusCounts: [
+//         { status: "NEW", count: 94 },
+//         { status: "SCHEDULED", count: 35 },
+//         { status: "IN PROGRESS", count: 12 },
+//         { status: "ON HOLD", count: 15 },
+//         { status: "DEVELOPED", count: 1 },
+//         { status: "PR REVIEW", count: 2 },
+//         { status: "REJECTED", count: 207 },
+//       ],
+//       userWorkCounts: [
+//         { username: "John Doe", count: 198 },
+//         { username: "Jane Smith", count: 101 },
+//         { username: "Ahmed Rashid", count: 128 },
+//         { username: "Sourov Sarkar", count: 24 },
+//         { username: "Md. Asif Rahman", count: 17 },
+//       ],
+//       workPackageTypeStats: [
+//         { workPackageType: "TASK", openCount: 292, closeCount: 5748 },
+//         { workPackageType: "BUG", openCount: 159, closeCount: 2409 },
+//         { workPackageType: "USER STORY", openCount: 456, closeCount: 187 },
+//         { workPackageType: "EPIC", openCount: 96, closeCount: 10 },
+//         { workPackageType: "FEATURE", openCount: 9, closeCount: 39 },
+//       ],
+//       priorityStats: [
+//         { priority: "HIGH", openCount: 92, closeCount: 1230 },
+//         { priority: "NORMAL", openCount: 910, closeCount: 6764 },
+//         { priority: "LOW", openCount: 7, closeCount: 43 },
+//         { priority: "IMMEDIATE", openCount: 2, closeCount: 201 },
+//         { priority: "BLOCKER", openCount: 2, closeCount: 186 },
+//       ],
+//     },
+//   };
+// };
+
+const ProjectDashboard = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const [data, setData] = useState<WorkPackageDashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchDashboardData = async () => {
+    const loadDashboardData = async () => {
       setLoading(true);
-      setError(null);
       try {
-        if (!projectId) {
-          throw new Error("Project ID is required");
-        }
-
         const response = await workPackageService.getDashboardData(
           Number(projectId)
         );
-
-        if (response.statusCode === "S200" && response.data) {
-          setData(response.data.data);
+        // const response = await fetchDashboardData(projectId);
+        if (response.statusCode === "S200") {
+          setData(response.data);
         } else {
-          setError(response.message || "Failed to fetch work packages");
+          setError(response.message || "Failed to fetch dashboard data");
         }
-      } catch (err: any) {
-        setError(err.message || "An unexpected error occurred");
+      } catch (err) {
+        setError("An unexpected error occurred");
+        console.error(err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchDashboardData();
+    loadDashboardData();
   }, [projectId]);
 
+  // Transform work package type data for better visualization
+  const getWorkPackageTypeChartData = () => {
+    if (!data) return [];
+    return data.workPackageTypeStats.map((item) => ({
+      name: item.workPackageType,
+      open: item.openCount,
+      closed: item.closeCount,
+    }));
+  };
+
+  // Transform priority data for better visualization
+  const getPriorityChartData = () => {
+    if (!data) return [];
+    return data.priorityStats.map((item) => ({
+      name: item.priority,
+      open: item.openCount,
+      closed: item.closeCount,
+    }));
+  };
+
   if (loading) {
-    return <div className="text-center p-10">Loading dashboard...</div>;
+    return (
+      <div className="flex justify-center items-center h-64">
+        <p className="text-lg">Loading dashboard data...</p>
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="text-center p-10 text-red-500">Error: {error}</div>;
+    return (
+      <div className="flex justify-center items-center h-64">
+        <p className="text-lg text-red-500">Error: {error}</p>
+      </div>
+    );
   }
 
   if (!data) {
-    return <div className="text-center p-10">No dashboard data available.</div>;
+    return (
+      <div className="flex justify-center items-center h-64">
+        <p className="text-lg">No dashboard data available.</p>
+      </div>
+    );
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
-      {/* Status Counts - Bar Chart */}
-      <div className="bg-white shadow rounded-xl p-4">
-        <h2 className="text-xl font-bold mb-2">Work Status Overview</h2>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={data.statusCounts}>
-            <XAxis dataKey="status" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="count" fill="#8884d8" />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
+    <div className="p-4 bg-gray-50">
+      <h1 className="text-2xl font-bold mb-6">Project Dashboard</h1>
 
-      {/* User Work Count - Pie Chart */}
-      <div className="bg-white shadow rounded-xl p-4">
-        <h2 className="text-xl font-bold mb-2">Work Assigned per User</h2>
-        <ResponsiveContainer width="100%" height={300}>
-          <PieChart>
-            <Pie
-              data={data.userWorkCounts}
-              dataKey="count"
-              nameKey="userName"
-              outerRadius={100}
-              label
-            >
-              {data.userWorkCounts.map((_, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
-        </ResponsiveContainer>
-      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Work Package Status Chart */}
+        <div className="bg-white p-4 rounded-lg shadow">
+          <h2 className="text-xl font-semibold mb-4">WORK PACKAGES GRAPH</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={data.statusCounts}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="status" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="count" fill="#FF8E8E" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
 
-      {/* Work Package Type Stats - Donut Chart */}
-      <div className="bg-white shadow rounded-xl p-4">
-        <h2 className="text-xl font-bold mb-2">Work Package Types</h2>
-        <ResponsiveContainer width="100%" height={300}>
-          <PieChart>
-            <Pie
-              data={data.workPackageTypeStats}
-              dataKey="count"
-              nameKey="type"
-              innerRadius={60}
-              outerRadius={100}
-              label
-            >
-              {data.workPackageTypeStats.map((_, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
-        </ResponsiveContainer>
-      </div>
+        {/* User Work Count Chart */}
+        <div className="bg-white p-4 rounded-lg shadow">
+          <h2 className="text-xl font-semibold mb-4">WORK GRAPH</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={data.userWorkCounts} layout="horizontal">
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="username" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="count" fill="#FF8E8E" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
 
-      {/* Category Count - Horizontal Bar Chart */}
-      <div className="bg-white shadow rounded-xl p-4">
-        <h2 className="text-xl font-bold mb-2">Work Package Categories</h2>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart layout="vertical" data={data.categoryCounts}>
-            <XAxis type="number" />
-            <YAxis type="category" dataKey="category" />
-            <Tooltip />
-            <Bar dataKey="count" fill="#82ca9d" />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
+        {/* Work Package Type Stats */}
+        <div className="bg-white p-4 rounded-lg shadow">
+          <h2 className="text-xl font-semibold mb-4">WORK PACKAGES OVERVIEW</h2>
+          <p className="text-gray-700 mb-2">Type</p>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={getWorkPackageTypeChartData()}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="open" name="open" fill="#FF8E8E" />
+              <Bar dataKey="closed" name="closed" fill="#87CEFA" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
 
-      {/* Priority Stats - Radar Chart */}
-      <div className="bg-white shadow rounded-xl p-4 md:col-span-2">
-        <h2 className="text-xl font-bold mb-2">Priority Distribution</h2>
-        <ResponsiveContainer width="100%" height={300}>
-          <RadarChart outerRadius={100} data={data.priorityStats}>
-            <PolarGrid />
-            <PolarAngleAxis dataKey="priority" />
-            <Radar
-              name="Count"
-              dataKey="count"
-              stroke="#8884d8"
-              fill="#8884d8"
-              fillOpacity={0.6}
-            />
-            <Tooltip />
-          </RadarChart>
-        </ResponsiveContainer>
+        {/* Priority Stats */}
+        <div className="bg-white p-4 rounded-lg shadow">
+          <h2 className="text-xl font-semibold mb-4">WORK PACKAGES OVERVIEW</h2>
+          <p className="text-gray-700 mb-2">Priority</p>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={getPriorityChartData()}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="open" name="open" fill="#FF8E8E" />
+              <Bar dataKey="closed" name="closed" fill="#87CEFA" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </div>
     </div>
   );

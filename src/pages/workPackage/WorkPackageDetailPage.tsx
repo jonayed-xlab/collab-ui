@@ -2,12 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   FileText,
-  Calendar,
-  User,
-  Clock,
   Edit,
   Trash2,
-  ChevronLeft,
   Link as LinkIcon,
   MessageSquare,
   CheckSquare,
@@ -27,13 +23,11 @@ import {
 import workPackageService from "../../services/workPackageService";
 import Card from "../../components/ui/Card";
 import WorkPackageCard from "../../components/work-package/WorkPackageCard";
-import { useAuth } from "../../contexts/AuthContext";
 import Breadcrumb from "../../components/ui/Breadcrumb";
 
 const WorkPackageDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { state } = useAuth();
   const [workPackageData, setWorkPackageData] =
     useState<WorkPackageResponseWrapper | null>(null);
   const [loading, setLoading] = useState(true);
@@ -351,13 +345,9 @@ const WorkPackageDetailPage: React.FC = () => {
           </div>
           <div className="bg-gray-50 p-3 rounded">
             <h3 className="text-xs font-semibold text-gray-500 mb-1">
-              Created At
+              Accountable To
             </h3>
-            <p>
-              {workPackage.createdAt
-                ? new Date(workPackage.createdAt).toLocaleDateString()
-                : "N/A"}
-            </p>
+            <p>{workPackage.accountableToName || "N/A"}</p>
           </div>
         </div>
 
@@ -384,7 +374,7 @@ const WorkPackageDetailPage: React.FC = () => {
           >
             Overview
           </button>
-          <button
+          {/* <button
             onClick={() => setActiveTab("activity")}
             className={`px-4 py-2 text-sm font-medium ${
               activeTab === "activity"
@@ -393,7 +383,7 @@ const WorkPackageDetailPage: React.FC = () => {
             }`}
           >
             Activity
-          </button>
+          </button> */}
           <button
             onClick={() => setActiveTab("relations")}
             className={`px-4 py-2 text-sm font-medium ${
@@ -478,12 +468,12 @@ const WorkPackageDetailPage: React.FC = () => {
                 </div>
 
                 {/* Audit Info */}
-                <div className="bg-gray-50 p-3 rounded">
+                {/* <div className="bg-gray-50 p-3 rounded">
                   <h3 className="text-xs font-semibold text-gray-500 mb-1">
                     Created By
                   </h3>
                   <p>{workPackage.createdByName || "N/A"}</p>
-                </div>
+                </div> */}
                 <div className="bg-gray-50 p-3 rounded">
                   <h3 className="text-xs font-semibold text-gray-500 mb-1">
                     Created At
@@ -508,9 +498,9 @@ const WorkPackageDetailPage: React.FC = () => {
                 {/* Accountability */}
                 <div className="bg-gray-50 p-3 rounded">
                   <h3 className="text-xs font-semibold text-gray-500 mb-1">
-                    Accountable To
+                    Branch Name
                   </h3>
-                  <p>{workPackage.accountableToName || "N/A"}</p>
+                  <p>{workPackage.branchName || "N/A"}</p>
                 </div>
               </div>
 

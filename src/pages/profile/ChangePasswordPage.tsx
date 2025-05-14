@@ -1,5 +1,5 @@
-import React from 'react';
-import ChangePasswordForm from '../../components/profile/ChangePasswordForm';
+import React from "react";
+import ChangePasswordForm from "../../components/profile/ChangePasswordForm";
 
 const ChangePasswordPage: React.FC = () => {
   return (
